@@ -1,5 +1,7 @@
 # github-finder
 React app
+Read the below part
+
 
 ## Philosophy
 
