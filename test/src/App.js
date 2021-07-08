@@ -1,8 +1,8 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from './logo.svg';         //main logo
+import './App.css';                   //global css
 
-function App() {
-  return (
+function App() {                         //app is the function--  components can be functions or classes
+  return ( 
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
@@ -15,11 +15,14 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React
+          Hello world, yo
         </a>
       </header>
     </div>
   );
 }
 
-export default App;
+export default App;              //this is where the app gets exported
+
+
+//we first make the  app component as a class and after we will learn  making app component as a function
