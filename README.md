@@ -1,6 +1,6 @@
 # github-finder
 React app
-Read the below part
+Read the below part, from official user guide of react(facebook)
 
 
 ## Philosophy
