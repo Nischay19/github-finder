@@ -1,8 +1,6 @@
 import React from 'react';            //main library
 import ReactDOM from 'react-dom';         //which is on rendering the main browser
-import './index.css';
 import App from './App';                         //the main app component
-import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(                                 //method -- takes in two thing  -- 1.what you wan to render(app component)      2. where you want to render
   <React.StrictMode>
@@ -10,8 +8,3 @@ ReactDOM.render(                                 //method -- takes in two thing 
   </React.StrictMode>,                              //1. app component           //  this is getting rendered to root (id) in one only index.html page --and so it is a single page  application
   document.getElementById('root')                  //2.  where you want to render it - id --root(in index.html - rember this) 
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
