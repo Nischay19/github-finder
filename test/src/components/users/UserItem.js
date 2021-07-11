@@ -1,6 +1,8 @@
-import React, { Component } from 'react'
+import React from 'react'
 
- class UserItem extends Component {
+import PropTypes from 'prop-types';
+
+ function UserItem ({user : { login , avatar_url, html_url }}) {                             //or arrow function         const UserItem =()=>{
   
 
           // //u dont need a constructor to start a state  
@@ -15,19 +17,21 @@ import React, { Component } from 'react'
           // }
 
 
-  state = {                                                  //state is just a jsobject,, which can store values for being used in the class based component
-    id: 'id',
-    login:' mojombo',
-    avatar_url: 'https://avatars.githubusercontent.com/u/1?v=4',                    //avatar url  stored in component state,weare outputing in the img 
-    html_url: 'https://github.com/mojombo'                     //we have stuff in our state, now use it in our render
-  };
+
+//now we are pulling the details of user from USER.JS > state so remove this state
+        // state = {                                                                   //state is just a jsobject,, which can store values for being used in the class based component
+        //   id: 'id',
+        //   login:' mojombo',
+        //   avatar_url: 'https://avatars.githubusercontent.com/u/1?v=4',                    //avatar url  stored in component state,weare outputing in the img 
+        //   html_url: 'https://github.com/mojombo'                     //we have stuff in our state, now use it in our render
+        // };
   
   
-  render() {
 
-    const {login,avatar_url,html_url } =this.state                   //this {} is used for destructuring, pulling out some states //by this we dont need ---   this.state. ---   to be written everywhere in {}
+                                                //this is because we passed in a prop of user in USERS.JS
+  //      const {login,avatar_url,html_url } =props.user;                   //this {} is used for destructuring, pulling out some states //by this we dont need ---   this.state. ---   to be written everywhere in {}
 
-    return (
+  return (
       <div className="card text-center">
         <img src={avatar_url} alt="" className="round-img" style= {{ width: '60px'}} />     
         <h3> {login}</h3>
@@ -35,8 +39,16 @@ import React, { Component } from 'react'
         <div>
           <a href={html_url} className="btn btn-dark btn-sm my-1">More</a></div>     
       </div>
-    )
-  }
-}                                //so we have some user-item component and some state within our component
+    );
+  
+};                                //so we have some user-item component and some state within our component
+
+
+
+
+UserItem.propTypes ={ 
+  user: PropTypes.object.isRequired,
+};
+
 
 export default UserItem

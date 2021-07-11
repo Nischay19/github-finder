@@ -1,17 +1,51 @@
-
 import React, {  Fragment ,Component } from 'react';                                 //   Instead of writing REACT.COMPONENT , we include our --  React , { COMPONENT }  here
                                                                 //import logo from './logo.svg';                      - we deleted it     //main logo
 import './App.css';                                            //global css
 
 import Navbar from './components/layout/Navbar'
-import UserItem from './components/users/UserItem';
+            //import UserItem from './components/users/UserItem';                      //we replaced this with users.js
+import Users from './components/users/Users';
+
+
+import axios from 'axios';
+
+
+
+
+
+
+
+
+
+
 
 
 class App extends Component {                         //app is the function--  components can be functions or classes            --rn we have class  ---  
                                                                //we have to extend the core react component    --   adding the React.Component CLASS    --which includes all the lifecycle methods and all
+    
 
 
 
+  state ={                                                    //now we all the fetched data from the github api in this  state    ,, this is in the fetchdata from axios bracket,,,,, in which we setState the array to      res.data
+    users: [],
+    loading: false                                            //untill the data is shown, show this spin  ,, we change it when get the data by ----  setState()
+  }
+
+
+
+
+    async componentDidMount(){                              //lifcycle method -- Its one ex is render            
+      
+      this.setState({ loading: true});
+
+      const res =await axios.get(`https://api.github.com/users?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`);                //this cient id,secret is so that we dont run out of requests
+
+      this.setState({users: res.data , loading: false });
+    }
+
+
+
+    
   render(){                                           //to return from a class , we need a method. and that is render    ...    and so put all the return part init
                                                           // const person =',john doe'                           // we can create  variables
 
@@ -42,7 +76,10 @@ class App extends Component {                         //app is the function--  c
     
       <h1>hello from App.js</h1>
       <Navbar title='Github finder' icon= 'fab fa-github' />
-      <UserItem />
+      
+      <div className="container">
+      <Users  loading={this.state.loading} users={this.state.users} />   
+      </div>
     </div>
     );                                                              //this is JSX -almost like html    -- javascript syntax extension
   }
