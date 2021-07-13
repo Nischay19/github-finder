@@ -41,9 +41,8 @@ const Users=({users ,loading}) => {
 
         return (
           <div style={userStyle}>
-            {users.map(user => (                   // this user variable repreents entire array, and now we are passing it as a prop to UserItems
-              <UserItem key={user.id} user={user} />
-            ))}
+            {users.map(user => (    <UserItem key={user.id} user={user} />    )                   // this user variable repreents entire array, and now we are passing it as a prop to UserItems
+                      )}
           </div>
         )
 
@@ -64,6 +63,7 @@ const userStyle ={
   gridTemplateColumns: 'repeat(3, 1fr)',
   gridGap: '1r'
 }
+
 
 
 export default Users

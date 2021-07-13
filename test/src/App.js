@@ -1,11 +1,11 @@
-import React, {  Fragment ,Component } from 'react';                                 //   Instead of writing REACT.COMPONENT , we include our --  React , { COMPONENT }  here
+import React, {  Fragment ,Component } from 'react'                                //   Instead of writing REACT.COMPONENT , we include our --  React , { COMPONENT }  here
                                                                 //import logo from './logo.svg';                      - we deleted it     //main logo
 import './App.css';                                            //global css
 
 import Navbar from './components/layout/Navbar'
             //import UserItem from './components/users/UserItem';                      //we replaced this with users.js
 import Users from './components/users/Users';
-
+import Search from './components/users/Search';
 
 import axios from 'axios';
 
@@ -45,7 +45,7 @@ class App extends Component {                         //app is the function--  c
 
 
 
-    
+
   render(){                                           //to return from a class , we need a method. and that is render    ...    and so put all the return part init
                                                           // const person =',john doe'                           // we can create  variables
 
@@ -78,6 +78,7 @@ class App extends Component {                         //app is the function--  c
       <Navbar title='Github finder' icon= 'fab fa-github' />
       
       <div className="container">
+        <Search />
       <Users  loading={this.state.loading} users={this.state.users} />   
       </div>
     </div>

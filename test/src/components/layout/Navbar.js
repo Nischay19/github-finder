@@ -44,6 +44,4 @@ export default Navbar
 
 
 
-
-
 // from es7 react snippe extension - just write forclass based component -rce

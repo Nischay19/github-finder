@@ -2,7 +2,19 @@ import React from 'react'
 
 import PropTypes from 'prop-types';
 
- function UserItem ({user : { login , avatar_url, html_url }}) {                             //or arrow function         const UserItem =()=>{
+
+
+
+
+
+
+
+
+
+  //read this
+ //this user, has come  from APP (as a state in APP)  to USER as prop then in USER , we mapped it to USERITEM as a prop again  
+ 
+function UserItem ({user : { login , avatar_url, html_url }}) {                             //or arrow function         const UserItem =()=>{       ////////we destructured the user by opening and writing, login,avatar_url
   
 
           // //u dont need a constructor to start a state  
