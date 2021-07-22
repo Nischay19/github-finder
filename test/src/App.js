@@ -6,9 +6,12 @@ import Navbar from './components/layout/Navbar'
             //import UserItem from './components/users/UserItem';                      //we replaced this with users.js
 import Users from './components/users/Users';
 import Search from './components/users/Search';
+import Alert from './components/layout/Alert';
+import About from './components/pages/About'
+import User from './components/users/User';
 
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import axios from 'axios';
-
 
 
 
@@ -28,25 +31,79 @@ class App extends Component {                         //app is the function--  c
 
   state ={                                                    //now we all the fetched data from the github api in this  state    ,, this is in the fetchdata from axios bracket,,,,, in which we setState the array to      res.data
     users: [],
-    loading: false                                            //untill the data is shown, show this spin  ,, we change it when get the data by ----  setState()
+    user:{},
+    loading: false,                                            //untill the data is shown, show this spin  ,, we change it when get the data by ----  setState()
+    alert: null
   }
 
 
 
 
-    async componentDidMount(){                              //lifcycle method -- Its one ex is render            
-      
-      this.setState({ loading: true});
 
-      const res =await axios.get(`https://api.github.com/users?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`);                //this cient id,secret is so that we dont run out of requests
+      // this is for the 30 users we had called through didmount
 
-      this.setState({users: res.data , loading: false });
-    }
+                          // async componentDidMount(){                              //lifcycle method -- Its one ex is render            
+                            
+                          //   this.setState({ loading: true});
+
+                          //   const res =await axios.get(`https://api.github.com/users?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`);                //this cient id,secret is so that we dont run out of requests
+
+                          //   this.setState({users: res.data , loading: false });
+                          // }
 
 
+
+
+
+
+
+// create the function/method which you defined the search->prop too
+    //search github users
+  searchusers = async text =>{
+    this.setState({loading: true});
+
+    const res =await axios.get(`https://api.github.com/search/users?q=${text}&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`);                //  we have added                 /search/users?q=${text}        this is query and that the text we search is inputed in the url 
+
+    this.setState({users: res.data.items , loading: false });               //the response from above is stored in     res.data.items      because their is also other stufff in res.data
+
+    console.log(text);
+  };
+
+
+
+  //get single github user
+  getUser = async (username) => {
+     
+    this.setState({loading: true});
+
+    const res =await axios.get(`https://api.github.com/users/${username}?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`);                //  we have added                 /search/users?q=${text}        this is query and that the text we search is inputed in the url 
+
+    this.setState({user: res.data , loading: false });                   //the response from above is stored in     res.data.items      because their is also other stufff in res.data
+
+
+  }
+
+
+
+
+
+  //clear users from state
+  clearusers= () =>{
+    this.setState({  users: [],   loading: false});
+  };
+
+
+  //set alert
+  setalert =(msg,type) =>{
+    this.setState({ alert : {msg , type} });
+    setTimeout( () => this.setState({alert: null })  , 5000 )
+  };
 
 
   render(){                                           //to return from a class , we need a method. and that is render    ...    and so put all the return part init
+
+    const {users, user, loading}= this.state;    //destructuring
+
                                                           // const person =',john doe'                           // we can create  variables
 
                                                           //   const fun = () => ' here is the function output'              //create function and return it too
@@ -62,8 +119,11 @@ class App extends Component {                         //app is the function--  c
                                                           // //another way of conditionals-- through &&
                                                           // const showname =true;
 
-    return ( 
-    <div className="App">  
+
+    return (                                 //everything should be in  --  ROUTER TAG
+      
+    <Router>
+      <div className="App">  
       
                                                                         {/* {loading ? <h4>Loading...</h4> : <h3> conditional through ternary operator and conditional through  -- {showname && person} </h3>}              
                                                                     
@@ -75,14 +135,48 @@ class App extends Component {                         //app is the function--  c
     
     
       <h1>hello from App.js</h1>
-      <Navbar title='Github finder' icon= 'fab fa-github' />
+        <Navbar 
+          title='Github finder' 
+          icon= 'fab fa-github' />
       
       <div className="container">
-        <Search />
-      <Users  loading={this.state.loading} users={this.state.users} />   
+        <Alert alert={this.state.alert}/>
+        <Switch>    
+          <Route 
+            exact path='/' 
+            render={props => (
+            <Fragment>
+
+              <Search 
+                searchUsers={this.searchusers} 
+                clearUsers={this.clearusers}  
+                showClear={users.length > 0 ? true : false}
+                setAlert={this.setalert}
+              />   
+              <Users  
+                loading={loading} 
+                users={users} 
+              />   
+
+            </Fragment>
+          )} />
+
+          <Route exact path='/about' component={About}/>   
+          
+          <Route exact path='/user/:login' render={props => (
+            <User 
+              {... props}
+              getUser={this.getUser}
+              user={user}
+              loading={loading}/>
+          )} />       
+
+        </Switch>
       </div>
-    </div>
-    );                                                              //this is JSX -almost like html    -- javascript syntax extension
+      </div>
+
+    </Router>
+  );                                                              //this is JSX -almost like html    -- javascript syntax extension
   }
   
 }

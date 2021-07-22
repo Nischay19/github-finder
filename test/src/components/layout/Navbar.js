@@ -2,7 +2,8 @@ import React from 'react'
 
 import PropTypes from 'prop-types';
 
-
+import {Link} from 'react-router-dom'                     //we are using { } in the Link because it is not the default export          //use link instead of a tag , because if we search on home then it remains if we go from about to home 
+ 
 
 
 
@@ -15,6 +16,14 @@ const Navbar= ({icon,title}) => {
         <h1>
           <i className ={icon} />{title}
         </h1>
+        <ul>
+          <li>
+            <Link to='/'>Home</Link>   
+          </li>
+          <li>
+            <Link to='/about'>About</Link>
+          </li>
+        </ul>
       </nav>
     )
 }
