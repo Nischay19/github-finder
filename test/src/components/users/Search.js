@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React , {useState} from 'react';
 
 import PropTypes from 'prop-types';
 
@@ -8,32 +8,33 @@ import PropTypes from 'prop-types';
 
 
 
-
-class Search extends Component {
+const Search = ({searchUsers, showClear , clearUsers ,setAlert}) => {
   
-  state={              //state is an object
-    text: ''
+                                                            //so here with usestate hook we have crated a text state here
+  const [text, setText] = useState('');                 //we only have one piece of state, so destructurize., and create a method to change the state={setText}  .. then we set it USESTATE( ' DEFAULT VALUE FOR IT ' )      
+  
+  
+
+
+                                    //as we are using functional components so just add const infront of any finction you are using
+  const   onChange=(e) =>{                                         //we are initialising a method for imput.
+
+                                    //        this.setState({ [e.target.name]: e.target.value })                      //this  -- e.target.name ,, will help even if we have different names, like text, email, 
+      setText(e.target.value);     //insteado of above, we just write the value we want to set the state to
   }
-  
-  
 
 
 
-  onChange=(e) =>{                                         //we are initialising a method for imput.
-    this.setState({ [e.target.name]: e.target.value })                      //this  -- e.target.name ,, will help even if we have different names, like text, email, 
-  }
+   const onSUBmit=(e)=>{
 
-
-
-  onSUBmit=(e)=>{
     e.preventDefault();
-    if(this.state.text === ''){
-       this.props.setAlert('please enter something', 'light');
+    if(text === ''){
+       setAlert('please enter something', 'light');
     }  
     else{
 
-      this.props.searchUsers(this.state.text);      //we created a prop for search which we defined in app.js as a method which is taking in as a parameter  --this.state.text
-      this.setState({ text: ''});                  //after doing everything we clear all the fields
+      searchUsers(text);      //we created a prop for search which we defined in app.js as a method which is taking in as a parameter  --this.state.text
+      setText('');                  //after doing everything we clear all the fields
   
     }
 
@@ -46,17 +47,17 @@ class Search extends Component {
 
 
 
-  render() {
-    const {showClear, clearUsers} = this.props;                 //this is to remove the this.prop from the props , destructure the code
+                            // render() {
+                           //    const {showClear, clearUsers} = this.props;        //props not come like this in functiojal components               //this is to remove the this.prop from the props , destructure the code
 
     return (
       <div>
-        <form onSubmit={this.onSUBmit} className="form">
+        <form onSubmit={onSUBmit} className="form">
           <input type="text" 
                  name="text"
                  placeholder="Search Users..." 
-                 value={this.state.text} 
-                 onChange={this.onChange}/>
+                 value={text} 
+                 onChange={onChange}/>
           <input type="submit" value="Search" className="btn btn-dark btn-block"/>
         </form>
         
@@ -66,8 +67,14 @@ class Search extends Component {
       
       </div>
     )
-  }
+  
 }
+
+
+
+
+
+
 
 
 Search.propTypes ={
