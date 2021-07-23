@@ -32,6 +32,8 @@ class App extends Component {                         //app is the function--  c
   state ={                                                    //now we all the fetched data from the github api in this  state    ,, this is in the fetchdata from axios bracket,,,,, in which we setState the array to      res.data
     users: [],
     user:{},
+    repos: [],
+
     loading: false,                                            //untill the data is shown, show this spin  ,, we change it when get the data by ----  setState()
     alert: null
   }
@@ -83,6 +85,18 @@ class App extends Component {                         //app is the function--  c
 
   }
 
+  //Get users Repos
+  getUserRepos = async (username) => {
+     
+    this.setState({loading: true});
+
+    const res =await axios.get(`https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`);                //  we have added                 /search/users?q=${text}        this is query and that the text we search is inputed in the url 
+
+    this.setState({repos: res.data , loading: false });                   //the response from above is stored in     res.data.items      because their is also other stufff in res.data
+
+
+  }
+
 
 
 
@@ -102,7 +116,7 @@ class App extends Component {                         //app is the function--  c
 
   render(){                                           //to return from a class , we need a method. and that is render    ...    and so put all the return part init
 
-    const {users, user, loading}= this.state;    //destructuring
+    const {users, user, repos , loading}= this.state;    //destructuring
 
                                                           // const person =',john doe'                           // we can create  variables
 
@@ -167,7 +181,9 @@ class App extends Component {                         //app is the function--  c
             <User 
               {... props}
               getUser={this.getUser}
+              getUserRepos={this.getUserRepos}
               user={user}
+              repos={repos}
               loading={loading}/>
           )} />       
 
