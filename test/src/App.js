@@ -1,4 +1,4 @@
-import React, {  Fragment ,Component } from 'react'                                //   Instead of writing REACT.COMPONENT , we include our --  React , { COMPONENT }  here
+import React, {  Fragment ,useState } from 'react'                                //   Instead of writing REACT.COMPONENT , we include our --  React , { COMPONENT }  here
                                                                 //import logo from './logo.svg';                      - we deleted it     //main logo
 import './App.css';                                            //global css
 
@@ -23,20 +23,25 @@ import axios from 'axios';
 
 
 
-class App extends Component {                         //app is the function--  components can be functions or classes            --rn we have class  ---  
+const App = ({ }) => {                         //app is the function--  components can be functions or classes            --rn we have class  ---  
                                                                //we have to extend the core react component    --   adding the React.Component CLASS    --which includes all the lifecycle methods and all
     
 
+const [users, setUsers] = useState([]);
+const [user, setUser] = useState({});
+const [repos, setRepos] = useState([]);
+const [loading, setLoading] = useState(false);
+const [alert, setAlert] = useState(null);
 
 
-  state ={                                                    //now we all the fetched data from the github api in this  state    ,, this is in the fetchdata from axios bracket,,,,, in which we setState the array to      res.data
-    users: [],
-    user:{},
-    repos: [],
+                       //so we replace this with above       // state ={                                                    //now we all the fetched data from the github api in this  state    ,, this is in the fetchdata from axios bracket,,,,, in which we setState the array to      res.data
+                                                    //   users: [],
+                                                    //   user:{},
+                                                    //   repos: [],
 
-    loading: false,                                            //untill the data is shown, show this spin  ,, we change it when get the data by ----  setState()
-    alert: null
-  }
+                                                    //   loading: false,                                            //untill the data is shown, show this spin  ,, we change it when get the data by ----  setState()
+                                                    //   alert: null
+                                                    // }
 
 
 
@@ -61,62 +66,78 @@ class App extends Component {                         //app is the function--  c
 
 // create the function/method which you defined the search->prop too
     //search github users
-  searchusers = async text =>{
-    this.setState({loading: true});
+  const  searchusers = async text =>{
+    setLoading(true);
 
     const res =await axios.get(`https://api.github.com/search/users?q=${text}&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`);                //  we have added                 /search/users?q=${text}        this is query and that the text we search is inputed in the url 
 
-    this.setState({users: res.data.items , loading: false });               //the response from above is stored in     res.data.items      because their is also other stufff in res.data
+                              //replaced by setusers/loading        //    this.setState({users: res.data.items , loading: false });               //the response from above is stored in     res.data.items      because their is also other stufff in res.data
 
-    console.log(text);
+      setUsers(res.data.items);
+      setLoading(false);
+
   };
 
 
 
+
+
   //get single github user
-  getUser = async (username) => {
+  const  getUser = async (username) => {
      
-    this.setState({loading: true});
+    setLoading (true);
 
     const res =await axios.get(`https://api.github.com/users/${username}?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`);                //  we have added                 /search/users?q=${text}        this is query and that the text we search is inputed in the url 
 
-    this.setState({user: res.data , loading: false });                   //the response from above is stored in     res.data.items      because their is also other stufff in res.data
-
-
+    setUser(res.data);                       //the response from above is stored in     res.data.items      because their is also other stufff in res.data   but here we are storing single user data so just res.data
+    setLoading(false);
   }
 
+
+
+
+
   //Get users Repos
-  getUserRepos = async (username) => {
+  const getUserRepos = async (username) => {
      
-    this.setState({loading: true});
+    setLoading(true)
 
     const res =await axios.get(`https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`);                //  we have added                 /search/users?q=${text}        this is query and that the text we search is inputed in the url 
 
-    this.setState({repos: res.data , loading: false });                   //the response from above is stored in     res.data.items      because their is also other stufff in res.data
-
+    setRepos(res.data); 
+    setLoading(false);                   
 
   }
+
 
 
 
 
 
   //clear users from state
-  clearusers= () =>{
-    this.setState({  users: [],   loading: false});
+   const  clearusers= () =>{
+    setUsers([]);
+    setLoading(false);
   };
+
+
+
 
 
   //set alert
-  setalert =(msg,type) =>{
-    this.setState({ alert : {msg , type} });
-    setTimeout( () => this.setState({alert: null })  , 5000 )
+  const  showalert =(msg,type) =>{
+
+    setAlert({msg , type});
+
+    setTimeout( () =>  setAlert(null) ,   5000 );             
   };
 
 
-  render(){                                           //to return from a class , we need a method. and that is render    ...    and so put all the return part init
 
-    const {users, user, repos , loading}= this.state;    //destructuring
+                                      //render(){                                           //to return from a class , we need a method. and that is render    ...    and so put all the return part init
+
+                                      // const {users, user, repos , loading}= this.state;    //destructuring         //already done by usestate
+
 
                                                           // const person =',john doe'                           // we can create  variables
 
@@ -154,7 +175,7 @@ class App extends Component {                         //app is the function--  c
           icon= 'fab fa-github' />
       
       <div className="container">
-        <Alert alert={this.state.alert}/>
+        <Alert alert={alert}/>
         <Switch>    
           <Route 
             exact path='/' 
@@ -162,10 +183,10 @@ class App extends Component {                         //app is the function--  c
             <Fragment>
 
               <Search 
-                searchUsers={this.searchusers} 
-                clearUsers={this.clearusers}  
+                searchUsers={searchusers} 
+                clearUsers={clearusers}  
                 showClear={users.length > 0 ? true : false}
-                setAlert={this.setalert}
+                setAlert={showalert}
               />   
               <Users  
                 loading={loading} 
@@ -180,8 +201,8 @@ class App extends Component {                         //app is the function--  c
           <Route exact path='/user/:login' render={props => (
             <User 
               {... props}
-              getUser={this.getUser}
-              getUserRepos={this.getUserRepos}
+              getUser={getUser}
+              getUserRepos={getUserRepos}
               user={user}
               repos={repos}
               loading={loading}/>
@@ -192,10 +213,19 @@ class App extends Component {                         //app is the function--  c
       </div>
 
     </Router>
-  );                                                              //this is JSX -almost like html    -- javascript syntax extension
+    );                                                              //this is JSX -almost like html    -- javascript syntax extension
   }
   
-}
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -234,7 +264,9 @@ class App extends Component {                         //app is the function--  c
 
 
 
-export default App;              //this is where the app gets exported
+
+
+      export default App;              //this is where the app gets exported
 
 
 

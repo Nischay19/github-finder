@@ -1,30 +1,49 @@
-import React, {Fragment, Component } from 'react'
+import React, {Fragment, useEffect } from 'react'
 
 import Spinner from '../layout/spinner';
 import Repos from '../Repos/Repos';
 
 
 
-import PropTypes from 'prop-types';
 
+import PropTypes from 'prop-types';
 
 import {Link} from 'react-router-dom';
 
- class User extends Component {
+
+
+
+
+ const User = ({ user ,loading , getUser, getUserRepos, repos ,match }) => {
   
 
 
 
 
-  componentDidMount(){                                           //thisfires of right after component is loaded
-    
-    this.props.getUser(this.props.match.params.login);                //so all the user state data in the app.js is being passed in here to getuser prop. and now lets extract all the data       //this.props.match.params.login --  this is put in the getuser prop and that is the username    ..    so that we can get all the user data     // we gwt the aram from the path='/user/:login' in the Route tag.
-    this.props.getUserRepos(this.props.match.params.login);
- 
-  }
+
+  useEffect(() => {
+
+    getUser(match.params.login);                //so all the user state data in the app.js is being passed in here to getuser prop. and now lets extract all the data       //this.props.match.params.login --  this is put in the getuser prop and that is the username    ..    so that we can get all the user data     // we gwt the aram from the path='/user/:login' in the Route tag.
+    getUserRepos(match.params.login);                       //as match is alos a prop so -- instead of ----   this.props.match.params.login   use ----    match.params.login
+
+
+    //eslint-disable-next-line
+  } , []);         // if we keep the array empty then it only runs once          //in these [ ] we can define the times this should run in a loop. like if we write repos then whenever repos change then it will run
+
+
+
+
+
+                          //lifecycle methpd wont work in functionla components so we use useeffect hook to make it work
+                                      // componentDidMount(){                                           //thisfires of right after component is loaded
+                                        
+                                      //   getUser(match.params.login);                //so all the user state data in the app.js is being passed in here to getuser prop. and now lets extract all the data       //this.props.match.params.login --  this is put in the getuser prop and that is the username    ..    so that we can get all the user data     // we gwt the aram from the path='/user/:login' in the Route tag.
+                                      //   getUserRepos(match.params.login);                       //as match is alos a prop so -- instead of ----   this.props.match.params.login   use ----    match.params.login
+                                    
+                                      // }
   
   
-  render() {                                   //no state but lifecycle method
+                                                      //render() {                                   //no state but lifecycle method       //converted to use function and hooks
 
 
 
@@ -41,9 +60,9 @@ import {Link} from 'react-router-dom';
       public_repos,
       public_gists,
       hireable
-    }  = this.props.user; 
+    }  = user; 
 
-    const { loading, repos } =this.props;
+                         // const { loading, repos } =this.props;         //not required becauese  we already destructured the props in the functional component parameters space
 
     if (loading){
       return <Spinner/>;
@@ -105,8 +124,14 @@ import {Link} from 'react-router-dom';
           <Repos repos={repos} />
       </Fragment>
     )
-  }
-}
+  };
+
+
+
+
+
+
+
 
 User.propTypes ={
   loading:PropTypes.bool,

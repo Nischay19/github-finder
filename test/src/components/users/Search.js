@@ -26,7 +26,7 @@ const Search = ({searchUsers, showClear , clearUsers ,setAlert}) => {
 
 
    const onSUBmit=(e)=>{
-
+ 
     e.preventDefault();
     if(text === ''){
        setAlert('please enter something', 'light');
