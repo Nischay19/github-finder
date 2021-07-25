@@ -1,22 +1,23 @@
-import React, {Fragment, useEffect } from 'react'
+import React, {Fragment, useEffect ,useContext} from 'react'
 
 import Spinner from '../layout/spinner';
 import Repos from '../Repos/Repos';
 
 
-
-
-import PropTypes from 'prop-types';
-
 import {Link} from 'react-router-dom';
 
+import GithubContext from '../../context/github/githubContext';
 
 
 
 
- const User = ({ user ,loading , getUser, getUserRepos, repos ,match }) => {
+
+
+ const User = ({match }) => {
   
 
+  const githubContext = useContext(GithubContext);
+  const { getUser, loading , user , getUserRepos ,repos} = githubContext;
 
 
 
@@ -60,7 +61,7 @@ import {Link} from 'react-router-dom';
       public_repos,
       public_gists,
       hireable
-    }  = user; 
+    }  = user;                                    //this is coming from github context
 
                          // const { loading, repos } =this.props;         //not required becauese  we already destructured the props in the functional component parameters space
 
@@ -129,17 +130,23 @@ import {Link} from 'react-router-dom';
 
 
 
-
-
-
-
-User.propTypes ={
-  loading:PropTypes.bool,
-  user: PropTypes.object.isRequired,
-  getUser: PropTypes.func.isRequired,
-  getUserRepos: PropTypes.func.isRequired,
-  repos: PropTypes.array.isRequired                         //we have added repos as a prop in app.js in user component
-};
-
-
 export default User;
+
+
+
+
+
+
+
+
+//as context put, we dont need this
+
+                  // import PropTypes from 'prop-types';
+
+                  // User.propTypes ={
+                  //   // loading:PropTypes.bool,
+                  //   // user: PropTypes.object.isRequired,
+                  //   // getUser: Pro pTypes.func.isRequired,
+                  //   // getUserRepos: PropTypes.func.isRequired,
+                  //   // repos: PropTypes.array.isRequired                         //we have added repos as a prop in app.js in user component
+                  // };

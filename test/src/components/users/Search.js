@@ -1,39 +1,42 @@
-import React , {useState} from 'react';
-
-import PropTypes from 'prop-types';
+import React , {useState , useContext} from 'react';
 
 
-
-
+import GithubContext from '../../context/github/githubContext';
+import AlertContext from '../../context/alert/alertContext';
 
 
 
-const Search = ({searchUsers, showClear , clearUsers ,setAlert}) => {
-  
+
+
+const Search = () => {
+
+
+  const githubContext = useContext(GithubContext);
+  const alertContext = useContext(AlertContext);
+
+
                                                             //so here with usestate hook we have crated a text state here
-  const [text, setText] = useState('');                 //we only have one piece of state, so destructurize., and create a method to change the state={setText}  .. then we set it USESTATE( ' DEFAULT VALUE FOR IT ' )      
+  const [text, setText] = useState('');                         //we only have one piece of state, so destructurize., and create a method to change the state={setText}  .. then we set it USESTATE( ' DEFAULT VALUE FOR IT ' )      
   
   
+
 
 
                                     //as we are using functional components so just add const infront of any finction you are using
-  const   onChange=(e) =>{                                         //we are initialising a method for imput.
-
+const onChange=(e) =>{                                         //we are initialising a method for imput.
                                     //        this.setState({ [e.target.name]: e.target.value })                      //this  -- e.target.name ,, will help even if we have different names, like text, email, 
       setText(e.target.value);     //insteado of above, we just write the value we want to set the state to
   }
 
 
 
-   const onSUBmit=(e)=>{
- 
+const onSUBmit=(e)=>{
     e.preventDefault();
     if(text === ''){
-       setAlert('please enter something', 'light');
+       alertContext.setAlert('please enter something', 'light');
     }  
     else{
-
-      searchUsers(text);      //we created a prop for search which we defined in app.js as a method which is taking in as a parameter  --this.state.text
+      githubContext.searchusers(text);                          //we created a prop for search which we defined in app.js as a method which is taking in as a parameter  --this.state.text
       setText('');                  //after doing everything we clear all the fields
   
     }
@@ -61,29 +64,37 @@ const Search = ({searchUsers, showClear , clearUsers ,setAlert}) => {
           <input type="submit" value="Search" className="btn btn-dark btn-block"/>
         </form>
         
-        {showClear &&(                        //if the this.prop.clearuser is true then we want the button to show.
-                          <button className="btn btn-light btn-block" onClick={clearUsers}>Clear</button>
+        {githubContext.users.length > 0 &&(                        //if the this.prop.clearuser is true then we want the button to show.
+                    <button className="btn btn-light btn-block" 
+                            onClick={githubContext.clearUsers}>
+                      Clear
+                    </button>
         )}
       
       </div>
     )
   
-}
-
-
-
-
-
-
-
-
-Search.propTypes ={
-  searchUsers: PropTypes.func.isRequired,                //as searchusers is a function
-  clearUsers: PropTypes.func.isRequired,
-  showClear:PropTypes.bool.isRequired,
-  setAlert:PropTypes.func.isRequired
 };
 
 
 
 export default Search
+
+
+
+
+
+
+
+
+
+
+// import PropTypes from 'prop-types';
+
+
+//                        // Search.propTypes ={
+//                     // searchUsers: PropTypes.func.isRequired,                //as searchusers is a function
+//                     // clearUsers: PropTypes.func.isRequired,
+//                     // showClear:PropTypes.bool.isRequired,
+//                         setAlert:PropTypes.func.isRequired
+// };

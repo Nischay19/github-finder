@@ -1,11 +1,19 @@
-import React from 'react'
+import React ,{useContext} from 'react'
 import UserItem from './UserItem';
 import Spinner from '../layout/spinner';
-import PropTypes from 'prop-types';
+                    // import PropTypes from 'prop-types';
+import GithubContext from '../../context/github/githubContext';
 
 
-const Users=({users ,loading}) => {
+
+
+const Users=() => {
   
+  const githubContext =useContext(GithubContext);          // so we initialize with a lower case g    // now as  we have written this we can bring in any state/value from github state
+
+
+  const {loading ,users} =githubContext;              // so we just destructurized it so that we dont have to change anything in the below code... just like we destructured it in props.
+
                             // state={
                             //   users:[
                             //     {                     
@@ -52,10 +60,10 @@ const Users=({users ,loading}) => {
 }
 
 
-Users.propTypes ={
-  users: PropTypes.array.isRequired,
-  loading: PropTypes.bool.isRequired
-}
+              // Users.propTypes ={
+              //   users: PropTypes.array.isRequired,
+              //   loading: PropTypes.bool.isRequired
+              // }
 
 
 const userStyle ={
