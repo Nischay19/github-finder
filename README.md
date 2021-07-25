@@ -2,6 +2,8 @@
 - React app
 - Read the below part, from official user guide of react(facebook)
 
+link for the app
+https://githubfinder72848923.netlify.app/
 
 ## Philosophy
 
