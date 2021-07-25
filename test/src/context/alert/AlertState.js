@@ -22,7 +22,6 @@ import {
 const AlertState = props => {             
   
   const initialState = {                                     //or   --  const initialState = null;
-    
     alert: null 
   };                                           
 
@@ -41,7 +40,7 @@ const [state, dispatch] = useReducer(AlertReducer, initialState);               
 
 
 //set alert action
-    const  setAlert = (msg,type) =>{
+    const  setAlert = ( msg,type) =>{
 
       dispatch({
         type: SET_ALERT,
